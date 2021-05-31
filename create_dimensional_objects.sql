@@ -1,5 +1,11 @@
 CREATE SCHEMA STG AUTHORIZATION dbo;
 
+--Create Parquet file format
+CREATE EXTERNAL FILE FORMAT SynapseParquetFormat
+WITH ( 
+        FORMAT_TYPE = PARQUET
+     );
+
 --Customer
 CREATE EXTERNAL TABLE STG.DimCustomer
 WITH 

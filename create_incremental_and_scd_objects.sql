@@ -41,7 +41,7 @@ IF OBJECT_ID('STG.FactSales') IS NOT NULL
 
 SET @location = CONCAT('conformed/facts/factsales/incremental/',FORMAT (@ProcessDate, 'yyyy/MM/dd') )
 
-DECLARE @CreateExternalTableString VARCHAR(2000)
+DECLARE @CreateExternalTableString NVARCHAR(2000)
 
 SET @CreateExternalTableString = 
 'CREATE EXTERNAL TABLE STG.FactSales
@@ -158,7 +158,7 @@ IF OBJECT_ID('STG.FactSales') IS NOT NULL
 
 SET @location = CONCAT('conformed/facts/factsales/incremental/',FORMAT (@ProcessDate, 'yyyy/MM/dd') )
 
-DECLARE @CreateExternalTableString VARCHAR(2000)
+DECLARE @CreateExternalTableString NVARCHAR(2000)
 
 SET @CreateExternalTableString = 
 'CREATE EXTERNAL TABLE STG.FactSales

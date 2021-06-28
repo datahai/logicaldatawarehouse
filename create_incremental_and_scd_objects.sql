@@ -10,7 +10,8 @@ AS
 SELECT  
   --Surrogate Keys 
     DC.CustomerKey,
-    CAST(FORMAT(SO.OrderDate,'yyyyMMdd') AS INT) as OrderDateKey,
+    --CAST(FORMAT(SO.OrderDate,'yyyyMMdd') AS INT) as OrderDateKey,
+    SO.OrderDate,
     DSI.StockItemKey,
     DS.SupplierKey,
     --Degenerate Dimensions
@@ -25,7 +26,7 @@ LEFT JOIN LDW.vwDimCustomer DC ON DC.CustomerID = SO.CustomerID
 LEFT JOIN LDW.vwDimStockItem DSI ON DSI.StockItemID = SOL.StockItemID
 LEFT JOIN LDW.vwStockItems SI ON SI.StockItemID = DSI.StockItemID
 LEFT JOIN LDW.vwDimSupplier DS ON DS.SupplierID = SI.SupplierID
-WHERE SOL.FilePathDate = '2021-04-18';
+WHERE SOL.FilePathDate = '2021-04-18' AND SO.FilePathDate = '2021-04-18';
 
 --Dynamic SQL with a Stored Procedure to load Sales Data
 CREATE PROCEDURE STG.FactSalesLoad @ProcessDate DATE
@@ -70,7 +71,7 @@ LEFT JOIN LDW.vwDimCustomer DC ON DC.CustomerID = SO.CustomerID
 LEFT JOIN LDW.vwDimStockItem DSI ON DSI.StockItemID = SOL.StockItemID
 LEFT JOIN LDW.vwStockItems SI ON SI.StockItemID = DSI.StockItemID
 LEFT JOIN LDW.vwDimSupplier DS ON DS.SupplierID = SI.SupplierID
-WHERE SOL.FilePathDate = ''' + CAST(@ProcessDate AS CHAR(10)) + '''                            '
+WHERE SOL.FilePathDate = ''' + CAST(@ProcessDate AS CHAR(10)) + '''  AND SO.FilePathDate = ''' + CAST(@ProcessDate AS CHAR(10)) + ''''
 
 EXEC sp_executesql @CreateExternalTableString
 
@@ -187,7 +188,7 @@ LEFT JOIN LDW.vwDimCustomer DC ON DC.CustomerID = SO.CustomerID
 LEFT JOIN LDW.vwDimStockItem DSI ON DSI.StockItemID = SOL.StockItemID
 LEFT JOIN LDW.vwStockItems SI ON SI.StockItemID = DSI.StockItemID
 LEFT JOIN LDW.vwDimSupplierSCD  DS ON DS.SupplierID = SI.SupplierID AND SO.OrderDate BETWEEN DS.ValidFromDate AND DS.ValidToDate
-WHERE SOL.FilePathDate = ''' + CAST(@ProcessDate AS CHAR(10)) + ''''
+WHERE SOL.FilePathDate = ''' + CAST(@ProcessDate AS CHAR(10)) + '''  AND SO.FilePathDate = ''' + CAST(@ProcessDate AS CHAR(10)) + ''''
 
 EXEC sp_executesql @CreateExternalTableString
 

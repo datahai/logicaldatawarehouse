@@ -9,3 +9,6 @@ WHERE S.name = 'SalesLT'
 @activity('Get Views to Export').output.value
 
 --create linked service to sql database and add parameters
+
+--parameter for data lake
+sourcedata/sales/@{dataset().folder}
